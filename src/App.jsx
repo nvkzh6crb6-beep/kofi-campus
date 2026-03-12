@@ -26,7 +26,7 @@ function CSS() {
       "  --FD: 'Barlow Condensed','Arial Narrow',sans-serif;",
       "  --FB: 'Barlow',system-ui,sans-serif;",
       "}",
-      "html,body { background:var(--black); color:var(--cream); font-family:var(--FB); -webkit-font-smoothing:antialiased; }",
+      "html,body { background:var(--black); color:var(--cream); font-family:var(--FB); -webkit-font-smoothing:antialiased; overflow-x:hidden; }",
       "input,button,select { font-family:var(--FB); }",
       "input { background:none; border:none; color:var(--cream); outline:none; width:100%; }",
       "input::placeholder { color:rgba(240,232,214,0.3); }",
@@ -46,7 +46,17 @@ function CSS() {
       ".bp:active { transform:scale(.97)!important; }",
       ".mtrack { display:flex; overflow:hidden; white-space:nowrap; }",
       ".minner { display:flex; animation:mq 18s linear infinite; }",
-      "@media(max-width:768px){ .hide-m{display:none!important} .grid-m{grid-template-columns:1fr!important} }",
+      "html, body { overflow-x: hidden; max-width: 100vw; }",
+      "@media(max-width:768px){",
+      "  .hide-m{display:none!important}",
+      "  .grid-m{grid-template-columns:1fr!important}",
+      "  .grid-4{grid-template-columns:1fr 1fr!important}",
+      "  .grid-2{grid-template-columns:1fr!important}",
+      "  .grid-footer{grid-template-columns:1fr 1fr!important}",
+      "  .hero-title{font-size:clamp(52px,16vw,100px)!important}",
+      "  .nav-tabs{display:none!important}",
+      "  .nav-mobile{display:flex!important}",
+      "}",
     ].join("\n");
     document.head.appendChild(s);
   }, []);
@@ -88,7 +98,7 @@ const MENUS = [
         {id:"ban",label:"Banane",extra:.6},{id:"mad",label:"Madeleine",extra:.7},
       ],
       extra:[
-        {id:"sho",label:"+1 Shot",extra:.7},{id:"sir",label:"Sirop",extra:.5},
+        {id:"sho",label:"+1 Shake",extra:.7},{id:"sir",label:"Sirop",extra:.5},
         {id:"avo",label:"Lait d'avoine",extra:.6},
       ],
     },
@@ -129,7 +139,7 @@ const MENUS = [
         {id:"fru",label:"Fruit Cup",extra:.9},
       ],
       extra:[
-        {id:"sh2",label:"+1 Shot",extra:.7},{id:"si2",label:"Sirop",extra:.5},
+        {id:"sh2",label:"+1 Shake",extra:.7},{id:"si2",label:"Sirop",extra:.5},
         {id:"av2",label:"Lait d'avoine",extra:.6},
       ],
     },
@@ -430,18 +440,18 @@ export default function Kofi() {
 
 function Nav({view, setView, cartQty, cartTotal, cartBounce, loyaltyPts, onCartOpen}) {
   return (
-    <nav style={{position:"sticky", top:0, zIndex:100, background:"rgba(10,10,8,0.94)", backdropFilter:"blur(16px)", borderBottom:"1px solid var(--border)", padding:"0 20px"}}>
-      <div style={{maxWidth:1200, margin:"0 auto", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:16}}>
-        <button type="button" onClick={() => setView("home")} style={{background:"none", border:"none", cursor:"pointer", fontFamily:"var(--FD)", fontSize:28, fontWeight:900, color:"var(--cream)", letterSpacing:3, lineHeight:1}}>KŌFI</button>
-        <div style={{display:"flex"}}>
+    <nav style={{position:"sticky", top:0, zIndex:100, background:"rgba(10,10,8,0.94)", backdropFilter:"blur(16px)", borderBottom:"1px solid var(--border)", padding:"0 12px"}}>
+      <div style={{maxWidth:1200, margin:"0 auto", height:56, display:"flex", alignItems:"center", justifyContent:"space-between", gap:8}}>
+        <button type="button" onClick={() => setView("home")} style={{background:"none", border:"none", cursor:"pointer", fontFamily:"var(--FD)", fontSize:24, fontWeight:900, color:"var(--cream)", letterSpacing:3, lineHeight:1, flexShrink:0}}>KŌFI</button>
+        <div style={{display:"flex", flex:1, justifyContent:"center"}}>
           {[["menu","MENU"],["loyalty","FIDÉLITÉ"],["history","HISTORIQUE"]].map(([v,l]) => (
-            <button key={v} type="button" onClick={() => setView(v)} style={{background:"none", border:"none", cursor:"pointer", padding:"0 16px", height:64, fontFamily:"var(--FD)", fontSize:14, fontWeight:700, letterSpacing:2, color:view===v?"var(--cream)":"rgba(240,232,214,.4)", borderBottom:view===v?"2px solid var(--pink)":"2px solid transparent", transition:"all .18s ease"}}>{l}</button>
+            <button key={v} type="button" onClick={() => setView(v)} style={{background:"none", border:"none", cursor:"pointer", padding:"0 10px", height:56, fontFamily:"var(--FD)", fontSize:12, fontWeight:700, letterSpacing:1, color:view===v?"var(--cream)":"rgba(240,232,214,.4)", borderBottom:view===v?"2px solid var(--pink)":"2px solid transparent", transition:"all .18s ease", whiteSpace:"nowrap"}}>{l}</button>
           ))}
         </div>
-        <div style={{display:"flex", alignItems:"center", gap:12}}>
-          <div style={{fontFamily:"var(--FD)", fontSize:13, fontWeight:700, letterSpacing:1, color:"var(--pink)"}}>✦ {loyaltyPts.toLocaleString()} PTS</div>
-          <button type="button" className="bp" onClick={onCartOpen} style={{background:"var(--cream)", border:"none", cursor:"pointer", padding:"10px 18px", fontFamily:"var(--FD)", fontSize:15, fontWeight:900, letterSpacing:1, color:"var(--black)", transform:cartBounce?"scale(1.08)":"scale(1)", transition:"transform .2s ease"}}>
-            PANIER {cartQty>0 && "("+cartQty+")"}{cartQty>0 && <span style={{marginLeft:8, opacity:.6}}>{cartTotal.toFixed(2)}€</span>}
+        <div style={{display:"flex", alignItems:"center", gap:8, flexShrink:0}}>
+          <div className="hide-m" style={{fontFamily:"var(--FD)", fontSize:12, fontWeight:700, letterSpacing:1, color:"var(--pink)"}}>✦ {loyaltyPts.toLocaleString()} PTS</div>
+          <button type="button" className="bp" onClick={onCartOpen} style={{background:"var(--cream)", border:"none", cursor:"pointer", padding:"9px 14px", fontFamily:"var(--FD)", fontSize:14, fontWeight:900, letterSpacing:1, color:"var(--black)", transform:cartBounce?"scale(1.08)":"scale(1)", transition:"transform .2s ease"}}>
+            🛒{cartQty>0 && " "+cartQty}
           </button>
         </div>
       </div>
@@ -480,7 +490,7 @@ function HomeView({onGoMenu, onAbout}) {
 
       <div style={{maxWidth:1200, margin:"80px auto 0", padding:"0 20px"}}>
         <SL style={{marginBottom:40}}>NOS MENUS PHARES</SL>
-        <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:2}}>
+        <div className="grid-4" style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:2}}>
           {MENUS.map((m,i) => (
             <div key={m.id} onClick={onGoMenu} style={{cursor:"pointer", position:"relative", paddingTop:"130%", overflow:"hidden", background:m.gradient}}>
               <div style={{position:"absolute", inset:0, display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"20px 16px"}}>
@@ -496,7 +506,7 @@ function HomeView({onGoMenu, onAbout}) {
         <button type="button" className="bp" onClick={onGoMenu} style={{width:"100%", padding:"22px", background:"var(--surface)", border:"none", borderTop:"1px solid var(--border)", cursor:"pointer", fontFamily:"var(--FD)", fontSize:20, fontWeight:900, letterSpacing:3, color:"var(--cream)"}}>VOIR TOUT LE MENU →</button>
       </div>
 
-      <div style={{maxWidth:1200, margin:"80px auto 80px", padding:"0 20px", display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
+      <div className="grid-2" style={{maxWidth:1200, margin:"80px auto 80px", padding:"0 20px", display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
         <div style={{background:"var(--cream)", padding:"48px 40px"}}>
           <div style={{fontFamily:"var(--FD)", fontSize:"clamp(40px,5vw,72px)", fontWeight:900, color:"var(--black)", lineHeight:.9, letterSpacing:-1, marginBottom:20}}>
             FIDÉLITÉ<br /><span style={{fontStyle:"italic"}}>RÉCOMPENSÉE.</span>
@@ -667,8 +677,8 @@ function Checkout({cart, cartTotal, finalTotal, loyaltyPts, redeemPts, onToggleR
         </Block>
         <Block title="02 — INFORMATIONS">
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
-            <IField label="PRÉNOM" value={firstName} onChange={e => setFirstName(e.target.value)} ph="Louis" />
-            <IField label="NOM" value={lastName} onChange={e => setLastName(e.target.value)} ph="Dupont" />
+            <IField label="PRÉNOM" value={firstName} onChange={e => setFirstName(e.target.value)} ph="Abigael" />
+            <IField label="NOM" value={lastName} onChange={e => setLastName(e.target.value)} ph="Kere" />
           </div>
           <IField label="NOTE (optionnel)" value={note} onChange={e => setNote(e.target.value)} ph="Sans sucre, allergies…" style={{marginTop:12}} />
         </Block>
@@ -829,7 +839,7 @@ function LoyaltyView({pts, history}) {
         </div>
         <div style={{fontSize:13, color:"rgba(240,232,214,.4)", fontFamily:"var(--FD)", letterSpacing:1}}>ENCORE {next} PTS POUR +1€ DE RÉDUCTION</div>
       </div>
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:2, marginBottom:2}}>
+      <div className="grid-2" style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:2, marginBottom:2}}>
         {[{icon:"🛒",label:"COMMANDES",v:history.length},{icon:"✦",label:"PTS GAGNÉS",v:earned.toLocaleString()},{icon:"💰",label:"RÉDUCTIONS",v:Math.floor(pts/LS)+"€"}].map(s => (
           <div key={s.label} style={{background:"var(--surface)", padding:"28px 20px", textAlign:"center", border:"1px solid var(--border)"}}>
             <div style={{fontSize:28, marginBottom:10}}>{s.icon}</div>
@@ -923,7 +933,7 @@ function AboutModal({onClose}) {
           Tu commandes. Tu arrives. Tu repars. <strong style={{color:"var(--cream)"}}>Zéro attente.</strong>
         </p>
       </div>
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:2, marginBottom:2}}>
+      <div className="grid-2" style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:2, marginBottom:2}}>
         {[{n:"01",t:"RAPIDITÉ",s:"Commande en 30 secondes, récupère en moins."},{n:"02",t:"QUALITÉ",s:"Produits sélectionnés, options personnalisables."},{n:"03",t:"PROXIMITÉ",s:"Un van sur ton campus. Pas ailleurs."}].map(v => (
           <div key={v.n} style={{background:"var(--surface2)", border:"1px solid var(--border)", padding:"24px 20px"}}>
             <div style={{fontFamily:"var(--FD)", fontSize:40, fontWeight:900, color:"rgba(240,232,214,.07)", lineHeight:1, marginBottom:8}}>{v.n}</div>
@@ -970,7 +980,7 @@ function ReviewsBlock() {
   return (
     <div style={{marginTop:2}}>
       <div style={{background:"var(--surface)", border:"1px solid var(--border)", padding:"28px 32px", borderBottom:"none"}}><SL>AVIS CLIENTS</SL></div>
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
+      <div className="grid-2" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
         {reviews.map((r,i) => (
           <div key={i} style={{background:"var(--surface)", border:"1px solid var(--border)", padding:"20px 24px"}}>
             <div style={{display:"flex", justifyContent:"space-between", marginBottom:10}}>
@@ -1008,7 +1018,7 @@ function FAQBlock() {
 function FooterBlock() {
   return (
     <footer style={{marginTop:2, background:"var(--surface)", border:"1px solid var(--border)", padding:"32px 32px 24px"}}>
-      <div style={{display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:24, marginBottom:24}}>
+      <div className="grid-footer" style={{display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:24, marginBottom:24}}>
         <div>
           <div style={{fontFamily:"var(--FD)", fontSize:32, fontWeight:900, letterSpacing:3, marginBottom:8}}>KŌFI</div>
           <div style={{fontSize:13, color:"rgba(240,232,214,.4)", fontWeight:300}}>Your break, upgraded ☕<br />Prototype étudiant</div>
