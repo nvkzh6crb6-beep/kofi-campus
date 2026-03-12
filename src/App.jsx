@@ -358,7 +358,7 @@ export default function Kofi() {
       {toast && <Toast msg={toast} />}
       {banner && <Banner banner={banner} />}
 
-      <div style={{minHeight:"100vh", background:"var(--black)", overflowX:"hidden"}}>
+      <div style={{minHeight:"100vh", background:"var(--black)", overflowX:"hidden", maxWidth:"100vw", width:"100%"}}>
         <Nav view={view} setView={setView} cartQty={cartQty} cartTotal={cartTotal} cartBounce={cartBounce} loyaltyPts={loyaltyPts} onCartOpen={() => setCartOpen(true)} />
 
         {tracking && (
@@ -368,7 +368,7 @@ export default function Kofi() {
         {view==="home" && <HomeView onGoMenu={() => setView("menu")} onAbout={() => setShowAbout(true)} />}
 
         {view==="menu" && (
-          <div className="grid-m" style={{maxWidth:1200, margin:"0 auto", padding:"0 20px 80px", display:"grid", gridTemplateColumns:"1fr 380px", gap:32, alignItems:"start"}}>
+          <div className="grid-m" style={{maxWidth:1200, margin:"0 auto", padding:"0 12px 80px", display:"grid", gridTemplateColumns:"1fr 380px", gap:32, alignItems:"start"}}>
             <div>
               <SL style={{margin:"32px 0 24px"}}>NOTRE MENU</SL>
               <div style={{display:"flex", flexDirection:"column", gap:2}}>
@@ -506,7 +506,7 @@ function HomeView({onGoMenu, onAbout}) {
         <button type="button" className="bp" onClick={onGoMenu} style={{width:"100%", padding:"22px", background:"var(--surface)", border:"none", borderTop:"1px solid var(--border)", cursor:"pointer", fontFamily:"var(--FD)", fontSize:20, fontWeight:900, letterSpacing:3, color:"var(--cream)"}}>VOIR TOUT LE MENU →</button>
       </div>
 
-      <div className="grid-2" style={{maxWidth:1200, margin:"80px auto 80px", padding:"0 20px", display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
+      <div className="home-loyalty" style={{maxWidth:1200, margin:"80px auto 80px", padding:"0 20px", display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
         <div style={{background:"var(--cream)", padding:"48px 40px"}}>
           <div style={{fontFamily:"var(--FD)", fontSize:"clamp(40px,5vw,72px)", fontWeight:900, color:"var(--black)", lineHeight:.9, letterSpacing:-1, marginBottom:20}}>
             FIDÉLITÉ<br /><span style={{fontStyle:"italic"}}>RÉCOMPENSÉE.</span>
@@ -543,7 +543,7 @@ function MenuRow({menu, expanded, onToggle, selOpt, onSelOpt, onAdd, isFav, onFa
 
   return (
     <div className="fu" style={{animationDelay:delay+"ms"}}>
-      <button type="button" disabled={disabled} onClick={onToggle} style={{width:"100%", background:expanded?"var(--surface2)":"var(--surface)", border:"none", borderTop:"1px solid var(--border)", padding:"20px 24px", cursor:disabled?"not-allowed":"pointer", display:"flex", alignItems:"center", gap:20, transition:"background .2s ease", color:"var(--cream)"}}>
+      <button type="button" disabled={disabled} onClick={onToggle} style={{width:"100%", background:expanded?"var(--surface2)":"var(--surface)", border:"none", borderTop:"1px solid var(--border)", padding:"16px 12px", cursor:disabled?"not-allowed":"pointer", display:"flex", alignItems:"center", gap:20, transition:"background .2s ease", color:"var(--cream)"}}>
         <div style={{fontFamily:"var(--FD)", fontSize:40, fontWeight:900, color:expanded?"var(--pink)":"rgba(240,232,214,.12)", lineHeight:1, minWidth:48, textAlign:"center", transition:"color .2s ease"}}>
           {MENUS.findIndex(m => m.id===menu.id)+1}
         </div>
@@ -556,7 +556,7 @@ function MenuRow({menu, expanded, onToggle, selOpt, onSelOpt, onAdd, isFav, onFa
             )}
           </div>
         </div>
-        <div style={{display:"flex", alignItems:"center", gap:20, flexShrink:0}}>
+        <div style={{display:"flex", alignItems:"center", gap:12, flexShrink:0, flexWrap:"wrap", justifyContent:"flex-end"}}>
           {qtyInCart>0 && <span style={{fontFamily:"var(--FD)", fontSize:13, fontWeight:900, letterSpacing:1, color:"var(--pink)"}}>×{qtyInCart} PANIER</span>}
           <button type="button" onClick={e => { e.stopPropagation(); onFav(); }} style={{background:"none", border:"none", cursor:"pointer", fontSize:18, color:isFav?"#e05a5a":"rgba(240,232,214,.3)", transition:"color .2s, transform .2s", transform:isFav?"scale(1.2)":"scale(1)"}}>♥</button>
           <div style={{fontFamily:"var(--FD)", fontSize:28, fontWeight:900, color:disabled?"rgba(240,232,214,.2)":"var(--cream)"}}>{menu.price.toFixed(2)}€</div>
@@ -570,7 +570,7 @@ function MenuRow({menu, expanded, onToggle, selOpt, onSelOpt, onAdd, isFav, onFa
             {Object.entries(menu.options||{}).map(([cat,opts]) => (
               <div key={cat}>
                 <div style={{fontFamily:"var(--FD)", fontSize:12, fontWeight:900, letterSpacing:3, color:"rgba(240,232,214,.4)", marginBottom:10}}>{pCat(cat)}</div>
-                <div style={{display:"flex", gap:8, overflowX:"auto", paddingBottom:4}}>
+                <div style={{display:"flex", gap:6, flexWrap:"wrap", paddingBottom:4}}>
                   {opts.map(o => {
                     const active = selOpt && selOpt[menu.id] && selOpt[menu.id][cat]===o.id;
                     return (
@@ -584,7 +584,7 @@ function MenuRow({menu, expanded, onToggle, selOpt, onSelOpt, onAdd, isFav, onFa
               </div>
             ))}
           </div>
-          <div style={{marginTop:20, paddingTop:20, borderTop:"1px solid var(--border)", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap"}}>
+          <div style={{marginTop:20, paddingTop:20, borderTop:"1px solid var(--border)", display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, flexWrap:"wrap"}}>
             <div>
               <div style={{fontSize:11, fontFamily:"var(--FD)", fontWeight:700, letterSpacing:2, color:"rgba(240,232,214,.4)", marginBottom:4}}>TON CHOIX</div>
               <div style={{fontSize:13, color:"rgba(240,232,214,.7)", lineHeight:1.5}}>
@@ -702,7 +702,7 @@ function Checkout({cart, cartTotal, finalTotal, loyaltyPts, redeemPts, onToggleR
         </Block>
         <Block title="04 — PAIEMENT">
           {!payMethod ? (
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
+            <div className="checkout-pay-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
               {[{id:"applepay",l:"APPLE PAY",s:"Touch / Face ID"},{id:"googlepay",l:"GOOGLE PAY",s:"NFC wallet"},{id:"card",l:"CARTE",s:"CB · Visa · Mastercard"},{id:"deposit",l:"ACOMPTE",s:"Paye une partie maintenant"},{id:"cash",l:"SUR PLACE",s:"Paiement au van"}].map(p => (
                 <button key={p.id} type="button" className="bp" onClick={() => onChoosePay(p.id)} style={{padding:"20px 18px", cursor:"pointer", textAlign:"left", background:"var(--surface)", border:"1px solid var(--border)", color:"var(--cream)"}}>
                   <div style={{fontFamily:"var(--FD)", fontSize:16, fontWeight:900, letterSpacing:1}}>{p.l}</div>
@@ -948,7 +948,7 @@ function AboutModal({onClose}) {
           Rendre les pauses campus plus simples, plus rapides, et franchement meilleures.
         </div>
       </div>
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2, marginBottom:2}}>
+      <div className="about-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2, marginBottom:2}}>
         <div style={{background:"var(--surface)", border:"1px solid var(--border)", padding:"20px 24px"}}>
           <SL style={{marginBottom:12}}>HORAIRES</SL>
           <div style={{fontFamily:"var(--FD)", fontSize:18, fontWeight:700, marginBottom:4}}>Lun–Ven</div>
@@ -980,7 +980,7 @@ function ReviewsBlock() {
   return (
     <div style={{marginTop:2}}>
       <div style={{background:"var(--surface)", border:"1px solid var(--border)", padding:"28px 32px", borderBottom:"none"}}><SL>AVIS CLIENTS</SL></div>
-      <div className="grid-2" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
+      <div className="reviews-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}>
         {reviews.map((r,i) => (
           <div key={i} style={{background:"var(--surface)", border:"1px solid var(--border)", padding:"20px 24px"}}>
             <div style={{display:"flex", justifyContent:"space-between", marginBottom:10}}>
